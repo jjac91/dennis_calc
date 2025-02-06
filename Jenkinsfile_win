@@ -21,12 +21,15 @@ pipeline {
             }
         }
         stage('Report') {
-            post {
-                // If Maven was able to run the tests, even if some of the test
-                // failed, record the test results and archive the jar file.
-                success {
-                    junit '**/target/surefire-reports/TEST-*.xml'
-                    archiveArtifacts 'target/*.jar'
+             steps {
+                script {
+                    // Run unit tests to generate JUnit results
+                    echo "Running unit tests and generating JUnit results"
+                    sh "mvn test"
+                    // Generate code coverage reports (example with JaCoCo)
+                    echo "Generating code coverage report"
+                    sh "mvn jacoco:report"
+                    // Optionally, display coverage reports or upload them (e.g., to a tool like SonarQube)
                 }
             }
         }
