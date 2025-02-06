@@ -11,14 +11,16 @@ pipeline {
                 // Get some code from a GitHub repository
                 git 'https://github.com/nlilaramani/Calc.git'
 
-                // Run Maven on a Windows agent.
-                //withMaven{
-                    bat "mvn -Dmaven.test.failure.ignore=true clean package"
+                    // Run Maven on a Windows agent.
+                    //withMaven{
+                    bat 'mvn -Dmaven.test.failure.ignore=true clean package'
                  //}
 
-                // To run Maven on a Unix agent, use
-                // sh "mvn -Dmaven.test.failure.ignore=true clean package"
+            // To run Maven on a Unix agent, use
+            // sh "mvn -Dmaven.test.failure.ignore=true clean package"
             }
+        }
+        stage('Report') {
             post {
                 // If Maven was able to run the tests, even if some of the test
                 // failed, record the test results and archive the jar file.
@@ -27,20 +29,6 @@ pipeline {
                     archiveArtifacts 'target/*.jar'
                 }
             }
-            
         }
-        /*stage('Docker image'){
-            steps {
-                bat "docker build -t nlpappu/repo:calc ."
-            }
-        }*/
-        /*stage('Push Docker image'){
-            steps {
-                bat """
-                docker login -u nlpappu -p nv981222
-                docker push nlpappu/repo:calc
-                """
-            }
-        }*/
     }
 }
